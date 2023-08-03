@@ -28,7 +28,7 @@ function JobCard({name,tags,company,slug,jobSource}) {
         {buttonWasClicked ? (
             <p>Loading Page...</p>
         ) : (
-          <Link to={`/jobs/${slug}`}>
+          <Link to={`/app/jobs/${slug}`}>
             <p>Read Job Description</p>
           </Link>
         )}

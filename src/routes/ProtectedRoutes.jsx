@@ -6,7 +6,7 @@ function ProtectedRoutes() {
       <Outlet />
     </main>
   ) : (
-    <Navigate to={"/"} />
+    <Navigate to={"/sign-in"} />
   );
 }
 

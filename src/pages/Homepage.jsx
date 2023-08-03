@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react' // hooks from react 
+import { useEffect, useState } from 'react' // hooks from react 
 import axios from 'axios'; // axios for making api calls
 import { Link } from 'react-router-dom'; // link to aid navigation to pages 
 import Marquee from 'react-fast-marquee'; // package for the horizontal scroll effect
@@ -51,7 +51,7 @@ function Homepage() {
             <p className="lg:w-[55%] mx-auto lg:text-lg my-2">
               {` EmployNexa is an innovative job listing platform that connects job seekers with their ideal opportunities effortlessly.Find your dream job today with EmployNexa and take your career to new heights.`}
             </p>
-            <Link to={`/jobs`}>
+            <Link to={`/app/jobs`}>
               <button className="bg-blue-500 text-white px-4 py-2 my-3">
                 <p>Search Jobs</p>
               </button>

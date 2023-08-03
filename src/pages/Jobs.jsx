@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import  {useEffect, useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai';
 import JobCard from "../component/JobCard/JobCard"
 import Skeleton from 'react-loading-skeleton';
@@ -143,7 +143,7 @@ function Jobs() {
                         <button
                             onClick={() => handleSearch(input)}
                             disabled={isLoading}
-                            className="text-xl text-white bg-red-500 px-4 py-[0.6rem] w-[20%] lg:w-[10%] flex justify-center items-center disabled:bg-gray-500 ease duration-500"
+                            className="text-xl text-white bg-blue-500 px-4 py-[0.6rem] w-[20%] lg:w-[10%] flex justify-center items-center disabled:bg-gray-500 ease duration-500"
                         >
                             <AiOutlineSearch />
                         </button>

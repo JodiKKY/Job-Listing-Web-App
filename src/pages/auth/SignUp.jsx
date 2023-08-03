@@ -22,7 +22,7 @@ function SignUp() {
       resetFields();
       toast.success("User Account Successfully Created!");
       setTimeout(() => {
-        navigate("/");
+        navigate("/sign-in");
       }, 3000);
     } catch (error) {
       toast.error(error);
@@ -30,32 +30,41 @@ function SignUp() {
   }
 
   return (
-    <main>
-      <h1>Create An Account</h1>
-      <form>
-        <label htmlFor="email">Email</label>
-        <br />
-        <input
-          type="email"
-          name=""
-          id=""
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
-        <label htmlFor="password">Password</label>
-        <br />
-        <input
-          type="password"
-          name=""
-          id=""
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
-        <button onClick={createUser}>Submit</button>
-      </form>
-      <p>Have An Account? <span><Link to={"/"}>Sign In</Link></span></p>
+    <main className="pt-[10vh]">
+      <section className="max-w-[1000px] mx-auto p-5">
+        <h1 className="text-center text-2xl font-bold">
+          Create An Account
+        </h1>
+        <form>
+          <label htmlFor="email">Email</label>
+          <br />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border w-full px-4 py-2"
+          />
+          <br />
+          <br />
+          <label htmlFor="password">Password</label>
+          <br />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="border w-full px-4 py-2"
+          />
+          <br />
+          <br />
+          <button onClick={createUser} className="px-4 py-2 bg-blue-500 text-white my-5">Submit</button>
+        </form>
+        <p>
+          Already Have an Account?{" "}
+          <span>
+            <Link to={"/sign-in"} className="text-blue-500">Sign In</Link>
+          </span>
+        </p>
+      </section>
     </main>
   );
 }
