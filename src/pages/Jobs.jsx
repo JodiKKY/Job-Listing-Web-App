@@ -10,7 +10,7 @@ function Jobs() {
     const [nextPageLink, setNextPageLink] = useState();
     const [isLoading, setIsLoading] = useState(false);
 
-    
+
     async function handleSearch(searchItem) {
         const options = {
             method: 'GET',
@@ -63,7 +63,31 @@ function Jobs() {
 
 
     async function loadNextPage(searchItem) {
+        setIsLoading(true);
+        const options = {
+            method: "GET",
+            url: "https://jobsearch4.p.rapidapi.com/api/v2/Jobs/Search",
+            params: {
+                searchQuery: searchItem ? `${searchItem}` : `any`,
+                pageNumber: "1",
+                PageSize: "30",
+            },
+            headers: {
+                "X-RapidAPI-Key": "3eacc72e4amshb5e94d827aaf7acp12ece2jsnec5609b4f77e",
+                "X-RapidAPI-Host": "jobsearch4.p.rapidapi.com",
+            },
+        };
+        try {
+            const response = await axios.request(options);
 
+            const newData = response.data.data;
+            setJobs((prevJobs) => [...prevJobs, ...newData]);
+            setNextPageLink(response.data.nextPage);
+            setIsLoading(false);
+        } catch (error) {
+            console.error(error);
+            setIsLoading(false);
+        }
     }
 
     useEffect(
@@ -119,7 +143,7 @@ function Jobs() {
                         <button
                             onClick={() => handleSearch(input)}
                             disabled={isLoading}
-                            className="text-xl text-white bg-blue-500 px-4 py-[0.6rem] w-[20%] lg:w-[10%] flex justify-center items-center disabled:bg-gray-500 ease duration-500"
+                            className="text-xl text-white bg-red-500 px-4 py-[0.6rem] w-[20%] lg:w-[10%] flex justify-center items-center disabled:bg-gray-500 ease duration-500"
                         >
                             <AiOutlineSearch />
                         </button>
@@ -162,7 +186,7 @@ function Jobs() {
                                             className="max-w-[200px] mx-auto"
                                             onClick={() => loadNextPage(input)}
                                         >
-                                            <button className="px-4 py-2 bg-blue-500 text-white my-5 w-[200px]">
+                                            <button className="px-4 py-2 bg-red-500 text-white my-5 w-[200px]" onClick={() => loadNextPage(input)}>
                                                 <p>Show More</p>
                                             </button>
                                         </section>

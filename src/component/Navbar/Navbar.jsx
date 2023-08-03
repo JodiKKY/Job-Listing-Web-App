@@ -8,11 +8,17 @@ function Navbar() {
         <section>
           <Link to='/'>
             <h1 className="header text-2xl">
-              W<span className="text-blue-500">D</span>WR
-              <span className="text-blue-500">•</span>
+              Employ<span className="text-blue-500">Nexa</span>
+              <span className="text-grey-500">•</span>
             </h1>
           </Link>
         </section>
+        {/* Sign-In */}
+        <Link to={`/sign-in`}>
+          <button className="bg-blue-500 text-white px-4 py-2 my-3 rounded-md">
+            <p>Sign In</p>
+          </button>
+        </Link>
       </section>
     </nav>
   );

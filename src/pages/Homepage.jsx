@@ -46,12 +46,10 @@ function Homepage() {
         <section className="flex justify-center items-center h-full py-8 bg-[#f8fafc] px-5 lg:px-0">
           <section className="text-center">
             <h1 className="text-4xl lg:text-6xl header">
-              WE <span className="text-blue-500">DON'T</span> WORK REMOTELY
+              DISCOVER. <span className="text-blue-500">CONNECT.</span> SUCCEED.
             </h1>
             <p className="lg:w-[55%] mx-auto lg:text-lg my-2">
-              {` We Don't Work Remotely is the largest non-remote work community in the world.
-            With over 4.5M visitors, WDWR is the number one destination to find
-            and list incredible remote jobs.`}
+              {` EmployNexa is an innovative job listing platform that connects job seekers with their ideal opportunities effortlessly.Find your dream job today with EmployNexa and take your career to new heights.`}
             </p>
             <Link to={`/jobs`}>
               <button className="bg-blue-500 text-white px-4 py-2 my-3">
@@ -72,9 +70,9 @@ function Homepage() {
           </Marquee>
         </section>
       </main>
-      <section className="max-w-[1000px] mx-auto">
-        <h3 className='font-bold text-2xl'>Top 30 Jobs</h3>
-        <div className="">
+      <section className="max-w-[1000px] mx-auto ">
+        <h3 className='font-bold text-2xl'>Top Jobs</h3>
+        <div className="grid md:grid-cols-2 gap-5">
           {jobs.map((job, index) => (
             <JobCard
               key={index}
