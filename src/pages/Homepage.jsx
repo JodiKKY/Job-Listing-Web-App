@@ -58,7 +58,7 @@ function Homepage() {
             </Link>
           </section>
         </section>
-        <section className="max-w-[1000px] mx-auto py-16">
+        <section className="max-w-[1000px] mx-auto py-16 px-5">
           <h1 className="text-center text-gray-400">{`Trusted by the world's leading companies`}</h1>
           <Marquee className="p-5 text-gray-400">
             <FaGoogle size={80} className="mx-[3em]" />
