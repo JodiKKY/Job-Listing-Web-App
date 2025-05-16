@@ -1,92 +1,105 @@
-import { useEffect, useState } from 'react' // hooks from react 
-import axios from 'axios'; // axios for making api calls
-import { Link } from 'react-router-dom'; // link to aid navigation to pages 
-import Marquee from 'react-fast-marquee'; // package for the horizontal scroll effect
-import { FaPlaystation, FaGoogle, FaPaypal, FaApple } from "react-icons/fa"; //icons used 
-import { SiTesla, SiToshiba } from "react-icons/si";// icons used 
-import JobCard from '../component/JobCard/JobCard'; // a component 
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import Marquee from "react-fast-marquee";
+import { FaPlaystation, FaGoogle, FaPaypal, FaApple } from "react-icons/fa";
+import { SiTesla, SiToshiba } from "react-icons/si";
+import JobCard from "../component/JobCard/JobCard";
 
 function Homepage() {
+  const [jobs, setJobs] = useState([]);
+  const [error, setError] = useState(null);
 
-  const [jobs, setJobs] = useState([])//allows you to add states to a functionional component , manage , track and Change state values
-  const [error, setError] = useState()
-
-
-  // allows you to perform side effects in your components. example fetching the data as seen below 
-  useEffect(
-    () => {
-      //API Call with useEffect and Axios
-      const fetchJobs = async () => { // allows you to performside effects in your components. example fetching the data as seen below 
-        const options = { //storing in the whole process of fetching in a variable 
-          method: 'GET',
-          url: 'https://jobsearch4.p.rapidapi.com/api/v2/Jobs/Latest',
-          params: { PageSize: '20' },
-          headers: {
-            'X-RapidAPI-Key': '6c83dd45a1msh79e3f99fbf32be6p12adbfjsn8007d5f2a47f', //move to .env
-            'X-RapidAPI-Host': 'jobsearch4.p.rapidapi.com',
-          },
-        };
-
-        try {
-          const response = await axios.request(options);//API Call using axios 
-          setJobs(response.data.data);//update the job state with our jobs
-        } catch (error) {
-          setError('An error occurred'); // catching the errors 
-        }
+  useEffect(() => {
+    const fetchJobs = async () => {
+      const options = {
+        method: "GET",
+        url: "https://jobsearch4.p.rapidapi.com/api/v2/Jobs/Latest",
+        params: { PageSize: "20" },
+        headers: {
+          "X-RapidAPI-Key": import.meta.env.VITE_RAPID_API_KEY, // use .env for security
+          "X-RapidAPI-Host": "jobsearch4.p.rapidapi.com",
+        },
       };
 
-      fetchJobs(); //caling the function
-    }, [] ); // added the second empty array argument to ensure that this only runs once when the component is mounted
+      try {
+        const response = await axios.request(options);
+        setJobs(response.data.data);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch jobs. Please try again.");
+      }
+    };
 
+    fetchJobs();
+  }, []);
 
   return (
-    // jsx syntax looks like html but it is known as jsx
-    <main className='pt-[7vh]'>
-      <main className="pt-[7vh]">
-        <section className="flex justify-center items-center h-full py-8 bg-[#f8fafc] px-5 lg:px-0">
-          <section className="text-center">
-            <h1 className="text-4xl lg:text-6xl header">
-              DISCOVER. <span className="text-blue-500">CONNECT.</span> SUCCEED.
-            </h1>
-            <p className="lg:w-[55%] mx-auto lg:text-lg my-2">
-              {` EmployNexa is an innovative job listing platform that connects job seekers with their ideal opportunities effortlessly.Find your dream job today with EmployNexa and take your career to new heights.`}
+    <main className="pt-[7vh] bg-white text-gray-800">
+      {/* Hero Section */}
+      <section className="flex justify-center items-center py-16 px-6 bg-gradient-to-b from-blue-50 to-white text-center">
+        <div>
+          <h1 className="text-4xl lg:text-6xl font-extrabold mb-4">
+            DISCOVER. <span className="text-blue-600">CONNECT.</span> SUCCEED.
+          </h1>
+          <p className="lg:w-[60%] mx-auto text-lg text-gray-600 mb-6">
+            EmployNexa is your gateway to exciting opportunities. Discover top jobs from trusted employers and elevate your career today.
+          </p>
+          <Link to="/app/jobs">
+            <button className="bg-blue-600 hover:bg-blue-700 transition-all duration-300 text-white font-medium py-3 px-6 rounded-lg shadow">
+              Search Jobs
+            </button>
+          </Link>
+        </div>
+      </section>
+
+      {/* Company Logos Section */}
+      <section className="py-14 bg-gray-100">
+        <h2 className="text-center text-gray-500 text-lg font-medium mb-5">
+          Trusted by the world’s leading companies
+        </h2>
+        <Marquee className="py-4">
+          <FaGoogle size={60} className="mx-10 text-gray-400 hover:text-gray-700 transition" />
+          <FaPlaystation size={60} className="mx-10 text-gray-400 hover:text-gray-700 transition" />
+          <SiTesla size={60} className="mx-10 text-gray-400 hover:text-gray-700 transition" />
+          <FaPaypal size={60} className="mx-10 text-gray-400 hover:text-gray-700 transition" />
+          <FaApple size={60} className="mx-10 text-gray-400 hover:text-gray-700 transition" />
+          <SiToshiba size={60} className="mx-10 text-gray-400 hover:text-gray-700 transition" />
+        </Marquee>
+      </section>
+
+      {/* Job Listings Section */}
+      <section className="max-w-6xl mx-auto px-6 py-12">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-2xl font-bold">Top Jobs</h3>
+          <Link to="/app/jobs" className="text-blue-600 hover:underline font-medium text-sm">
+            View All
+          </Link>
+        </div>
+
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {jobs.length > 0 ? (
+            jobs.map((job, index) => (
+              <JobCard
+                key={index}
+                name={job.title}
+                company={job.company}
+                tags={job.tags}
+                slug={job.slug}
+                jobSource={job.jobSource}
+              />
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-500">
+              {error ? "Error loading jobs." : "Loading top jobs..."}
             </p>
-            <Link to={`/app/jobs`}>
-              <button className="bg-blue-500 text-white px-4 py-2 my-3">
-                <p>Search Jobs</p>
-              </button>
-            </Link>
-          </section>
-        </section>
-        <section className="max-w-[1000px] mx-auto py-16 px-5">
-          <h1 className="text-center text-gray-400">{`Trusted by the world's leading companies`}</h1>
-          <Marquee className="p-5 text-gray-400">
-            <FaGoogle size={80} className="mx-[3em]" />
-            <FaPlaystation size={80} className="mx-[3em]" />
-            <SiTesla size={80} className="mx-[3em]" />
-            <FaPaypal size={80} className="mx-[3em]" />
-            <FaApple size={80} className="mx-[3em]" />
-            <SiToshiba size={80} className="mx-[3em]" />
-          </Marquee>
-        </section>
-      </main>
-      <section className="max-w-[1000px] mx-auto ">
-        <h3 className='font-bold text-2xl'>Top Jobs</h3>
-        <div className="grid md:grid-cols-2 gap-5">
-          {jobs.map((job, index) => (
-            <JobCard
-              key={index}
-              name={job.title}
-              company={job.company}
-              tags={job.tags}
-              slug={job.slug}
-              jobSource={job.jobSource}
-            />
-          ))}
+          )}
         </div>
       </section>
     </main>
-  )
+  );
 }
 
-export default Homepage
+export default Homepage;
