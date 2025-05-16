@@ -1,88 +1,94 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import DOMPurify from "isomorphic-dompurify";
 import { CiMapPin } from "react-icons/ci";
 
 function SelectedJob() {
-    const { id } = useParams()
-    const [job, setJob] = useState({})
-    useEffect(() => {
-        async function getSelectedJob() {
-            const options = {
-                method: "GET",
-                url: `https://jobsearch4.p.rapidapi.com/api/v2/Jobs/${id}`,
-                headers: {
-                    "X-RapidAPI-Key": "3eacc72e4amshb5e94d827aaf7acp12ece2jsnec5609b4f77e",
-                    "X-RapidAPI-Host": "jobsearch4.p.rapidapi.com",
-                },
-            };
-            // Fetch the data using the ID from the query params (e.g., context.params.dynamicId)
-            const response = await axios.request(options);
-            const data = response.data;
-            setJob(data)
-            console.log(job)
+  const { id } = useParams();
+  const [job, setJob] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function getSelectedJob() {
+      try {
+        const response = await axios.get(
+          "https://jsearch.p.rapidapi.com/job-details",
+          {
+            params: { job_id: id },
+            headers: {
+              "x-rapidapi-key": "6c83dd45a1msh79e3f99fbf32be6p12adbfjsn8007d5f2a47f",
+              "x-rapidapi-host": "jsearch.p.rapidapi.com",
+            },
+          }
+        );
+
+        const jobDetails = response.data.data?.[0];
+        if (jobDetails) {
+          setJob(jobDetails);
+        } else {
+          setError("Job details not found.");
         }
-        getSelectedJob()
-    }, [])
-    // const formattedDate = job.publishedDate.toLocaleString("en-US", {
-    //     month: "2-digit",
-    //     day: "2-digit",
-    //     year: "numeric",
-    //     hour: "2-digit",
-    //     minute: "2-digit",
-    //     second: "2-digit",
-    // });
-    return (
-        <div className="pt-[10vh]">
-            <section className="bg-gray-200 py-8">
-                <section className="max-w-[1000px] mx-auto p-5 lg:p-0">
-                    <h1 className="text-3xl header">{job.title}</h1>
-                    <p>
-                        {job.company} |{" "}
-                        <span className="text-blue-500">{job.location}</span>
-                    </p>
-                    {/* <br />
-                    <p>Posted: {formattedDate}</p>
-                    <section className="flex gap-3 items-center mt-2">
-                        {job.keyPhrases.map((tag, index) => {
-                            return (
-                                <p
-                                    key={index}
-                                    className="border border-black capitalize px-2 py-1"
-                                >
-                                    {tag.text}
-                                </p>
-                            );
-                        })}
-                    </section> */}
-                </section>
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch job details.");
+      }
+    }
+
+    if (id) {
+      getSelectedJob();
+    }
+  }, [id]);
+
+  if (error) {
+    return <p className="text-center text-red-500 mt-20">{error}</p>;
+  }
+
+  if (!job) {
+    return <p className="text-center mt-20">Loading job details...</p>;
+  }
+
+  return (
+    <div className="pt-[10vh]">
+      <section className="bg-gray-200 py-8">
+        <section className="max-w-[1000px] mx-auto p-5 lg:p-0">
+          <h1 className="text-3xl header">{job.job_title}</h1>
+          <p>
+            {job.employer_name} |{" "}
+            <span className="text-blue-500">{job.job_city}, {job.job_country}</span>
+          </p>
+        </section>
+      </section>
+
+      <section className="max-w-[1000px] mx-auto my-2 py-5 px-10 lg:p-0">
+        <section className="flex flex-col lg:flex-row justify-between gap-3">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(job.job_description || "No description available."),
+            }}
+            className="lg:w-[65%]"
+          />
+
+          <div className="lg:w-[30%] bg-gray-200 h-full flex flex-col justify-center items-center p-5">
+            <h1 className="text-center text-2xl header">{job.employer_name}</h1>
+            <hr className="my-4 border border-blue-500 w-full" />
+            <section className="flex gap-2 items-center">
+              <CiMapPin size={20} />
+              <p>{job.job_city}, {job.job_country}</p>
             </section>
-            <section className="max-w-[1000px] mx-auto my-2 py-5 px-10 lg:p-0">
-                <section className="flex flex-col lg:flex-row justify-between gap-3">
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: DOMPurify.sanitize(job.originalPosting),
-                        }}
-                        className="lg:w-[65%]"
-                    />
-                    <div className="lg:w-[30%] bg-gray-200 h-full flex flex-col justify-center items-center p-5">
-                        <h1 className="text-center text-2xl header">{job.company}</h1>
-                        <hr className="my-4 border border-blue-500 w-full" />
-                        <section className="flex gap-2 items-center">
-                            <CiMapPin size={20} />
-                            <p>{job.location}</p>
-                        </section>
-                        <button className="bg-blue-500 text-white px-4 py-2 my-2">
-                            <a href={job.url} target="_blank">
-                                Apply
-                            </a>
-                        </button>
-                    </div>
-                </section>
-            </section>
-        </div>
-    )
+            <a
+              href={job.job_apply_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-blue-500 text-white px-4 py-2 my-2 inline-block text-center"
+            >
+              Apply
+            </a>
+          </div>
+        </section>
+      </section>
+    </div>
+  );
 }
 
-export default SelectedJob
+export default SelectedJob;
