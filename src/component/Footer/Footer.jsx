@@ -1,13 +1,50 @@
-import React from 'react'
+import React from 'react';
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 
 function Footer() {
-    return (
-        <main className='bg-gray-200'>
-            <section className="max-w-[1000px] mx-auto p-5 text-center">
-                <p>Built by <span className='text-blue-500'><a href="#" target='_blank'>Jodi Yirenkyi</a></span></p>
-            </section>
-        </main>
-    )
+  return (
+    <footer className="bg-gray-900 text-white py-6 mt-12">
+      <div className="max-w-[1000px] mx-auto px-4 text-center">
+        <p className="text-sm mb-4">
+          Built with ❤️ by{' '}
+          <a
+            href="https://github.com/JodiKKY"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:underline"
+          >
+            Jodi Yirenkyi
+          </a>
+        </p>
+        <div className="flex justify-center space-x-6 text-xl">
+          <a
+            href="https://github.com/JodiKKY"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-400 transition-colors"
+          >
+            <FaGithub />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/jodiyy/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-400 transition-colors"
+          >
+            <FaLinkedin />
+          </a>
+          <a
+            href="https://twitter.com/YirenkyiJodi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-400 transition-colors"
+          >
+            <FaTwitter />
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;
