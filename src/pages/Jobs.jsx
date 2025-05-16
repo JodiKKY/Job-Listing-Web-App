@@ -5,7 +5,6 @@ import JobCard from "../component/JobCard/JobCard";
 import Skeleton from "react-loading-skeleton";
 
 const API_URL = "https://jsearch.p.rapidapi.com/search";
-const API_KEY =  '6c83dd45a1msh79e3f99fbf32be6p12adbfjsn8007d5f2a47f';
 
 function Jobs() {
   const [input, setInput] = useState("");
@@ -17,27 +16,35 @@ function Jobs() {
   const fetchJobs = async (query = "developer", pageNumber = 1, append = false) => {
     setIsLoading(true);
     setError("");
+
     try {
       const response = await axios.get(API_URL, {
         params: {
-          query,
-          page: pageNumber,
-          num_pages: 1,
+          query: query,
+          page: pageNumber.toString(),
+          num_pages: "1",
         },
         headers: {
-          "X-RapidAPI-Key":  '6c83dd45a1msh79e3f99fbf32be6p12adbfjsn8007d5f2a47f',
-          "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
+          "x-rapidapi-key": "6c83dd45a1msh79e3f99fbf32be6p12adbfjsn8007d5f2a47f",
+          "x-rapidapi-host": "jsearch.p.rapidapi.com",
         },
       });
 
-      const jobResults = response.data.data;
+      const jobResults = response.data.data || [];
+
       if (append) {
         setJobs((prev) => [...prev, ...jobResults]);
       } else {
         setJobs(jobResults);
       }
     } catch (err) {
-      setError("Failed to fetch jobs. Try again.");
+      if (err.response?.status === 403) {
+        setError("Access denied. Check API key or quota.");
+      } else if (err.response?.status === 429) {
+        setError("Rate limit exceeded. Please wait and try again.");
+      } else {
+        setError("Failed to fetch jobs. Try again.");
+      }
     } finally {
       setIsLoading(false);
     }

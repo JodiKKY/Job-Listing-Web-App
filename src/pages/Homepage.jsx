@@ -14,11 +14,11 @@ function Homepage() {
     const fetchJobs = async () => {
       const options = {
         method: "GET",
-        url: "https://jobsearch4.p.rapidapi.com/api/v2/Jobs/Latest",
+        url: 'https://jsearch.p.rapidapi.com/estimated-salary',
         params: { PageSize: "20" },
         headers: {
-          "X-RapidAPI-Key": import.meta.env.VITE_RAPID_API_KEY, // use .env for security
-          "X-RapidAPI-Host": "jobsearch4.p.rapidapi.com",
+          "X-RapidAPI-Key": '6c83dd45a1msh79e3f99fbf32be6p12adbfjsn8007d5f2a47f', // use .env for security
+          "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
         },
       };
 
