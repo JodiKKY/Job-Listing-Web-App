@@ -14,17 +14,17 @@ function Homepage() {
     const fetchJobs = async () => {
       const options = {
         method: "GET",
-        url: 'https://jsearch.p.rapidapi.com/estimated-salary',
-        params: { PageSize: "20" },
+        url: "https://jsearch.p.rapidapi.com/search",
+        params: { query: "developer", page: "1", num_pages: "1" },
         headers: {
-          "X-RapidAPI-Key": '6c83dd45a1msh79e3f99fbf32be6p12adbfjsn8007d5f2a47f', // use .env for security
+          "X-RapidAPI-Key": "6c83dd45a1msh79e3f99fbf32be6p12adbfjsn8007d5f2a47f",
           "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
         },
       };
 
       try {
         const response = await axios.request(options);
-        setJobs(response.data.data);
+        setJobs(response.data.data || []);
       } catch (err) {
         console.error(err);
         setError("Failed to fetch jobs. Please try again.");
@@ -81,16 +81,23 @@ function Homepage() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {jobs.length > 0 ? (
-            jobs.map((job, index) => (
-              <JobCard
-                key={index}
-                name={job.title}
-                company={job.company}
-                tags={job.tags}
-                slug={job.slug}
-                jobSource={job.jobSource}
-              />
-            ))
+            jobs
+              .filter((job) => job.job_id && !job.job_id.includes("http")) 
+              .map((job) => (
+                <JobCard
+                  key={job.job_id}
+                  id={job.job_id}
+                  name={job.job_title}
+                  company={job.employer_name}
+                  location={`${job.job_city || "N/A"}, ${job.job_country || ""}`}
+                  logo={job.employer_logo}
+                  tags={
+                    Array.isArray(job.job_required_skills)
+                      ? job.job_required_skills
+                      : []
+                  }
+                />
+              ))
           ) : (
             <p className="text-center col-span-full text-gray-500">
               {error ? "Error loading jobs." : "Loading top jobs..."}
