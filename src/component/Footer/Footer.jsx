@@ -6,9 +6,9 @@ function Footer() {
     <footer className="bg-gray-900 text-white py-6 mt-12">
       <div className="max-w-[1000px] mx-auto px-4 text-center">
         <p className="text-sm mb-4">
-          Built with ❤️ by{' '}
+          Built by{' '}
           <a
-            href="https://github.com/JodiKKY"
+            href="https://osd-portfolio.vercel.app"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-400 hover:underline"
@@ -26,7 +26,7 @@ function Footer() {
             <FaGithub />
           </a>
           <a
-            href="https://www.linkedin.com/in/jodiyy/"
+            href="https://www.linkedin.com/in/jodiyirenkyi/"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-400 transition-colors"
@@ -34,7 +34,7 @@ function Footer() {
             <FaLinkedin />
           </a>
           <a
-            href="https://twitter.com/YirenkyiJodi"
+            href="https://twitter.com/JodiKKY"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-400 transition-colors"
